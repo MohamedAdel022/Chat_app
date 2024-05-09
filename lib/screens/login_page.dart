@@ -11,6 +11,9 @@ import 'package:scholar_chat/widgets/custom_button.dart';
 import 'package:scholar_chat/widgets/custom_text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+
+
+
 class LoginPage extends StatelessWidget {
   static String id = 'LoginPage';
 
