@@ -4,6 +4,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scholar_chat/constants.dart';
 import 'package:scholar_chat/helper/show_snack_bar.dart';
 import 'package:scholar_chat/screens/chat_page.dart';
+import 'package:scholar_chat/screens/cubits/cubit/chat_cubit.dart';
 import 'package:scholar_chat/screens/cubits/login_cubit/login_cubit.dart';
 import 'package:scholar_chat/screens/register_page.dart';
 import 'package:scholar_chat/widgets/custom_button.dart';
@@ -35,10 +36,10 @@ class LoginPage extends StatelessWidget {
           if (state is LoginLoading) {
             isLoading = true;
           } else if (state is LoginSuccess) {
+            BlocProvider.of<ChatCubit>(context).getMessages();
             Navigator.pushNamed(context, ChatPage.id, arguments: emailAddress);
             isLoading = false;
             showSnackBar(context, message: 'Login successful');
-
           } else if (state is LoginFaliure) {
             showSnackBar(context, message: state.message);
             isLoading = false;
@@ -46,23 +47,25 @@ class LoginPage extends StatelessWidget {
 
           isLoading = false;
         },
-        builder:(context, state) =>  ModalProgressHUD(
+        builder: (context, state) => ModalProgressHUD(
           inAsyncCall: isLoading,
           child: Scaffold(
             backgroundColor: kPrimaryColor,
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Form(
-                key: formKey,
-                child: ListView(
-                  children: [
-                    SizedBox(height: 90),
-                    Image(
-                      image: AssetImage(klogo),
-                      height: 100,
-                    ),
-                    Center(
-                      child: Text(
+            body: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Spacer(
+                        flex: 1,
+                      ),
+                      Image(
+                        image: AssetImage(klogo),
+                      ),
+                      Text(
                         'Scholar Chat',
                         style: TextStyle(
                           color: Colors.white,
@@ -71,64 +74,73 @@ class LoginPage extends StatelessWidget {
                           fontFamily: 'pacifico',
                         ),
                       ),
-                    ),
-                    SizedBox(height: 70),
-                    Text(
-                      'LOGIN',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                      Spacer(
+                        flex: 1,
                       ),
-                    ),
-                    SizedBox(height: 16),
-                    CustomFormTextField(
-                        onChanged: (value) {
-                          emailAddress = value;
-                        },
-                        label: 'Username'),
-                    SizedBox(height: 16),
-                    PasswordCustomTextField(
-                      onChanged: (value) {
-                        password = value;
-                      },
-                    ),
-                    SizedBox(height: 16),
-                    CustomButtom(
-                        onTap: () async {
-                          if (formKey.currentState!.validate()) {
-                            BlocProvider.of<LoginCubit>(context).signInUser(
-                                emailAddress: emailAddress!,
-                                password: password!);
-                          } else {
-                            showSnackBar(context,
-                                message: 'Invalid credentials');
-                          }
-                        },
-                        text: Text(
-                          'Login',
-                        )),
-                    SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't have an account?",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, RegisterPage.id);
-                          },
-                          child: Text(
-                            " Sign up",
+                      Row(
+                        children: [
+                          Text(
+                            'LOGIN',
                             style: TextStyle(
-                                color: Color(0xffD7F2EC), fontSize: 16),
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      CustomFormTextField(
+                          onChanged: (value) {
+                            emailAddress = value;
+                          },
+                          label: 'Username'),
+                      SizedBox(height: 16),
+                      PasswordCustomTextField(
+                        onChanged: (value) {
+                          password = value;
+                        },
+                      ),
+                      SizedBox(height: 16),
+                      CustomButtom(
+                          onTap: () async {
+                            if (formKey.currentState!.validate()) {
+                              BlocProvider.of<LoginCubit>(context).signInUser(
+                                  emailAddress: emailAddress!,
+                                  password: password!);
+                            } else {
+                              showSnackBar(context,
+                                  message: 'Invalid credentials');
+                            }
+                          },
+                          text: Text(
+                            'Login',
+                          )),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Don't have an account?",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, RegisterPage.id);
+                            },
+                            child: Text(
+                              " Sign up",
+                              style: TextStyle(
+                                  color: Color(0xffD7F2EC), fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Spacer(
+                        flex: 3,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

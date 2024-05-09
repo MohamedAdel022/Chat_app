@@ -43,7 +43,6 @@ class RegisterPage extends StatelessWidget {
             child: Scaffold(
               backgroundColor: kPrimaryColor,
               body: Center(
-                
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Form(
