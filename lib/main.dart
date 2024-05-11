@@ -8,13 +8,16 @@ import 'package:scholar_chat/screens/cubits/login_cubit/login_cubit.dart';
 import 'package:scholar_chat/screens/cubits/register_cubit/register_cubit.dart';
 import 'package:scholar_chat/screens/login_page.dart';
 import 'package:scholar_chat/screens/register_page.dart';
+import 'package:scholar_chat/simple_bloc_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Bloc.observer = SimpleBlocObserver();
   runApp(const ScholarChat());
+
 }
 
 class ScholarChat extends StatelessWidget {
